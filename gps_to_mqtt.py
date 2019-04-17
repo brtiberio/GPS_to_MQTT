@@ -137,7 +137,7 @@ class Controller:
                 # create high byte for velocity status and low byte for position status
                 valid_message = int((new_data['velSolStatus'] << 8) | new_data['pSolStatus'])
                 self.mqtt_client.publish(ekf_topics['valid'],
-                                         payload=valid_message.to_bytes(1, 'little', signed=False),
+                                         payload=valid_message.to_bytes(4, 'little', signed=False),
                                          qos=0, retain=True)
             else:
                 sleep(0.01)  # max log freq is 20Hz so it should be enough
@@ -263,7 +263,7 @@ def main():
 
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
-            controller.mqqt_online = True
+            controller.mqtt_online = True
             # successfully connected
             (rc, _) = client.publish(ekf_topics['connected'], payload=True.to_bytes(1, 'little'),
                                      qos=2, retain=True)

@@ -164,14 +164,17 @@ def main():
         elif message.topic == ekf_topics['velocity']:
             velocity = unpack('<fff', message.payload)
             ros_message = roslibpy.Message({'x': velocity[0], 'y': velocity[1], 'z': velocity[2]})
-            controller.mqtt_subscribers[ekf_topics['position']]['ros_topic'].publish(ros_message)
+            controller.mqtt_subscribers[ekf_topics['velocity']]['ros_topic'].publish(ros_message)
 
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             controller.mqtt_online = True
             # successfully connected
+            while not controller.client_ros.is_connected:
+                sleep(1)
+
             message = roslibpy.Message({'data': 'connected'})
-            controller.client_ros.publish(general_topics['mqtt_ros'], message)
+            #controller.client_ros.publish(general_topics['mqtt_ros'], message)
             # now add mqttLog to root logger to enable it
             controller.set_mqqt_logger(general_topics['log'])
             logging.getLogger('').addHandler(controller.mqtt_logger)
@@ -258,8 +261,8 @@ def main():
     controller.begin_ros_client(hostname_ros, port_ros)
     # run ros client non-blocking
     controller.client_ros.run()
-
-    # ---------------------------------------------------------------------------
+    controller.add_mqtt_to_ros(general_topics['mqtt_ros'], 'std_msgs/Bool', general_topics['mqtt_ros'])
+    sleep(1)
     no_faults = True
     try:
         controller.client_mqtt.connect(hostname_mqtt, port=port_mqtt)
@@ -273,6 +276,9 @@ def main():
             logging.info('Failed to connect to broker...Exiting')
             return
 
+    # ---------------------------------------------------------------------------
+
+
     # create ros to mqtt for target velocity
     # orders come from ros, so it must be subscribed to write topic
     controller.add_ros_to_mqtt(sinamics_topics['target_velocity_write'], 'std_msgs/String',
@@ -285,6 +291,8 @@ def main():
     # ------------------------------------------------------------------------------
     # create mqtt to ros for ekf connected
     controller.add_mqtt_to_ros(ekf_topics['connected'], 'std_msgs/Bool', ekf_topics['connected'])
+    # create mqtt to ros for ekf valid
+    controller.add_mqtt_to_ros(ekf_topics['valid'], 'std_msgs/Bool', ekf_topics['valid'])
     # create mqtt to ros for ekf position
     controller.add_mqtt_to_ros(ekf_topics['position'], 'geometry_msgs/Point32', ekf_topics['position'])
     # create mqtt to ros for ekf velocity
