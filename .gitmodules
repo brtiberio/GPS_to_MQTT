@@ -1,0 +1,3 @@
+[submodule "novatel_OEM4_python"]
+	path = novatel_OEM4_python
+	url = https://github.com/brtiberio/novatel_OEM4_python.git
