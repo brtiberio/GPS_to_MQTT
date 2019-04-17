@@ -74,9 +74,7 @@ class MQTTHandler(logging.Handler):
                             qos=self.qos, retain=self.retain)
 
 
-
-
-class Controller():
+class Controller:
 
     def __init__(self):
         self.gps = None  # type: Gps
@@ -93,7 +91,6 @@ class Controller():
         # quick handlers for sending struct pack as binary.
         self.position = struct.Struct('<fff')
         self.velocity = struct.Struct('<fff')
-
 
     def handle_gps_data(self):
         """
