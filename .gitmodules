@@ -1,3 +1,6 @@
 [submodule "novatel_OEM4_python"]
 	path = novatel_OEM4_python
 	url = https://github.com/brtiberio/novatel_OEM4_python.git
+[submodule "mqtt_to_ros"]
+	path = mqtt_to_ros
+	url = https://github.com/brtiberio/mqtt_to_ros.git
