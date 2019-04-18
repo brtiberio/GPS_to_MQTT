@@ -294,8 +294,8 @@ def main():
         return
 
     parser = argparse.ArgumentParser(add_help=True, description="Logger for two GPS units and a razor device")
-    parser.add_argument("--gps1-port", action="store", type=str,
-                        dest="gps1_port", default="/dev/ttyUSB0")
+    parser.add_argument("--gps_port", action="store", type=str,
+                        dest="gps_port", default="/dev/ttyUSB0")
     parser.add_argument("-f", "--folder", action="store", type=str,
                         dest="folder", default="test1")
     parser.add_argument('--log', action='store', type=str, dest='log', default='main.log',
@@ -370,7 +370,7 @@ def main():
             controller.log_info('Failed to connect to broker...Exiting')
             return
     # configure gps unit
-    controller.begin_gps(com_port=args.gps1_port)
+    controller.begin_gps(com_port=args.gps_port)
     # prepare signal and handlers
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -389,6 +389,7 @@ def main():
     controller.gps.setDynamics(0)
 
     # enable augmented satellite systems
+    # TODO: reporting bad checksum. Must be an issue on novatel oem library.
     controller.gps.sbascontrol()
 
     # ask for bestxyz log at 20Hz
@@ -396,7 +397,7 @@ def main():
     # wait for Ctrl-C
     controller.log_info('Press Ctrl+C to Exit')
     signal.pause()
-
+    # exit gracefully
     controller.clean_exit()
     controller.log_info('Exiting now')
 
