@@ -390,7 +390,7 @@ def main():
 
     # enable augmented satellite systems
     # TODO: reporting bad checksum. Must be an issue on novatel oem library.
-    controller.gps.sbascontrol()
+    # controller.gps.sbascontrol()
 
     # ask for bestxyz log at 20Hz
     controller.gps.askLog(trigger=2, period=0.05)

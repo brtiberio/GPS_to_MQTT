@@ -174,7 +174,7 @@ def main():
                 sleep(1)
 
             message = roslibpy.Message({'data': 'connected'})
-            #controller.client_ros.publish(general_topics['mqtt_ros'], message)
+            # controller.client_ros.publish(general_topics['mqtt_ros'], message)
             # now add mqttLog to root logger to enable it
             controller.set_mqqt_logger(general_topics['log'])
             logging.getLogger('').addHandler(controller.mqtt_logger)
@@ -277,8 +277,6 @@ def main():
             return
 
     # ---------------------------------------------------------------------------
-
-
     # create ros to mqtt for target velocity
     # orders come from ros, so it must be subscribed to write topic
     controller.add_ros_to_mqtt(sinamics_topics['target_velocity_write'], 'std_msgs/String',
