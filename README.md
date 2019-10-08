@@ -30,6 +30,6 @@ python gps_mqtt_ros.py --hostname_mqtt=localhost --hostname_ros=localhost --port
 File mqqt_logger can be used to log all messages sent to mqtt client in topic "VIENA/#"
 
 Documentation about submodules can be seen in:
-`https://novatel-oem4-python.readthedocs.io/en/latest/` and in `https://mqtt-to-ros.readthedocs.io/en/latest/`
+https://novatel-oem4-python.readthedocs.io/en/latest/ and in https://mqtt-to-ros.readthedocs.io/en/latest/
 
 It requires the use of a mqtt broker server. Can be used locally with mosquitto.
